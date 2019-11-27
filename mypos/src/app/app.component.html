@@ -1,0 +1,12 @@
+<div *ngIf="authService.isLogin(); then dashboard; else login"></div>
+
+<ng-template #login>
+    <router-outlet></router-outlet>
+</ng-template>
+
+<ng-template #dashboard>
+    <app-header></app-header>
+    <app-menu></app-menu>
+    <router-outlet></router-outlet>
+    <app-footer></app-footer>
+</ng-template>
