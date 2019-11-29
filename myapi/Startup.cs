@@ -39,7 +39,7 @@ namespace myapi
 
             // Declare Database Service for DI
             services.AddDbContext<DatabaseContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("ConnectionSQLServer")));
+                options.UseSqlServer(Configuration.GetConnectionString("ConnectionDockerSQLServer")));
             // Declare Swagger Service for DI
             services.AddSwaggerGen(c =>
             {
