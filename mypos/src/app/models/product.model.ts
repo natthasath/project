@@ -1,5 +1,10 @@
-export class ProductResponse {
+export class ProductAllResponse {
     result:  Product[];
+    message: string;
+}
+
+export class ProductResponse {
+    result:  Product;
     message: string;
 }
 
@@ -9,5 +14,6 @@ export class Product {
     image:     string;
     stock:     number;
     price:     number;
+    qty:       number;
     created:   Date;
 }

@@ -59,9 +59,9 @@
                             <td>
                                 <img *ngIf="item.image === ''" src="assets/images/no_photo.jpg" class="product_image">
                                 <img *ngIf="item.image !== ''" src="{{ item.image }}" class="product_image">
-                                <strong class="product_name">{{ item.name }}</strong>
+                                <strong class="product_name">{{ item.name | uppercase }}</strong>
                             </td>
-                            <td>฿{{ item.price }}</td>
+                            <td>฿{{ item.price | number : '1.2-2' }}</td>
                             <td>{{ item.stock }}</td>
                             <td class="text-center">
                                 <img (click)="editProduct(item.productId)" src="assets/images/ic_edit.png" class="edit_product">

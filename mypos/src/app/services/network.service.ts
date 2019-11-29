@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ProductResponse, Product } from '../models/product.model';
+import { ProductAllResponse, Product, ProductResponse } from '../models/product.model';
 import { RegisterResponse } from '../models/user.model';
 import { LoginResponse } from '../models/login.model';
 import { environment } from 'src/environments/environment';
@@ -18,7 +18,7 @@ export class NetworkService {
   private loginURL = `${this.apiURL}/auth/login`;
   private registerURL = `${this.apiURL}/auth/register`;
   private productURL = `${this.apiURL}/product`;
-  public productImageURL = `${this.apiURL}/product/images/`;
+  public productImageURL = `${this.apiURL}/product/images`;
   private outOfStockURL = `${this.productURL}/count/out_of_stock`;
   private transactionURL = `${this.apiURL}/transaction`;
 
@@ -44,17 +44,25 @@ export class NetworkService {
   // http https, 4200 5001
   // Ajax CORS webapi () -> backend
 
-  getAllProduct(): Observable<ProductResponse> {
-    return this.httpClient.get<ProductResponse>(this.productURL)
+  getAllProduct(): Observable<ProductAllResponse> {
+    return this.httpClient.get<ProductAllResponse>(this.productURL)
   }
 
-  deleteProduct(id: number): Observable<ProductResponse> {
+  getProduct(id: number): Observable<ProductResponse> {
     return this.httpClient.get<ProductResponse>(`${this.productURL}/${id}`)
   }
 
-  newProduct(data: Product): Observable<ProductResponse> {
-    return this.httpClient.post<ProductResponse>(this.productURL, this.makeFormData(data))
+  deleteProduct(id: number): Observable<ProductAllResponse> {
+    return this.httpClient.get<ProductAllResponse>(`${this.productURL}/${id}`)
   }
+
+  newProduct(data: Product): Observable<ProductAllResponse> {
+    return this.httpClient.post<ProductAllResponse>(this.productURL, this.makeFormData(data))
+  }
+
+  // editProduct(data: Product, id: number): Observable<ProductAllResponse> {
+  //   return this.httpClient.put<ProductAllResponse>(`${this.productURL}/${id}`, this.makeFormData(data))
+  // }
 
   editProduct(data: Product, id: number): Observable<ProductResponse> {
     return this.httpClient.put<ProductResponse>(`${this.productURL}/${id}`, this.makeFormData(data))

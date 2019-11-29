@@ -14,6 +14,9 @@ import { HeaderComponent } from './components/shared/header/header.component';
 import { MenuComponent } from './components/shared/menu/menu.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from './services/jwt.interceptor';
+import { ShopHomeComponent } from './components/shop/shop-home/shop-home.component';
+import { ShopPaymentComponent } from './components/shop/shop-payment/shop-payment.component';
+import { CustomPipe } from './pipes/custom.pipe';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,10 @@ import { JwtInterceptor } from './services/jwt.interceptor';
     StockEditComponent,
     FooterComponent,
     HeaderComponent,
-    MenuComponent
+    MenuComponent,
+    ShopHomeComponent,
+    ShopPaymentComponent,
+    CustomPipe
   ],
   imports: [
     BrowserModule,

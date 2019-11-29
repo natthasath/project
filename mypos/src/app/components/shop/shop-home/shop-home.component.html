@@ -1,0 +1,120 @@
+<div class="content-wrapper">
+    <section class="content pt-3 pb-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div>
+                                <div *ngIf="mOrderArray.length === 0;then no_order else order">here is ignored</div>
+                                <ng-template #no_order>
+                                    <ul class="card card_no_order">Waiting for Order</ul>
+                                </ng-template>
+                                <ng-template #order>
+                                    <ul class="card card_orders">
+                                        <li *ngFor="let item of mOrderArray; let index = index"
+                                            [ngClass]="index % 2 == 0 ? 'selected_row' : 'normal_row'">
+                                            <div class="d-flex flex-row justify-content-between">
+                                                <div class="d-flex">
+                                                    <div class="image_product_list_item">
+                                                        <img *ngIf="item.image === ''" src="assets/images/no_photo.jpg">
+                                                        <img *ngIf="item.image !== ''" [src]="item.image" />
+                                                    </div>
+                                                    <div class="d-flex flex-column order-detail-block">
+                                                        <div class="title_product_list_item product-name">{{item.name}}
+                                                        </div>
+                                                        <div class="pt-2 d-flex flex-row">
+                                                            <input class="form-control order_input-price" disabled
+                                                                value="฿{{item.price * item.qty | number : '1.2-2'}}" />
+                                                            <div class="input-group ml-2 order_input-qty">
+                                                                <div class="input-group-prepend"
+                                                                    (click)="onClickAddOrder(item, true)">
+                                                                    <span class="input-group-text">
+                                                                        <i class="fas fa-minus"></i>
+                                                                    </span>
+                                                                </div>
+                                                                <input type="text" class="form-control text-center"
+                                                                    disabled value="{{item.qty}}" />
+                                                                <div class="input-group-append"
+                                                                    (click)="onClickAddOrder(item, false)">
+                                                                    <div class="input-group-text">
+                                                                        <i class="fas fa-plus"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <span (click)="onClickRemoveOrder(item)">
+                                                    <img src="assets/images/delete.png" class="nbutton_delete">
+                                                </span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </ng-template>
+
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h5>Tax 7%</h5>
+                                            <h3>฿0.00</h3>
+                                        </div>
+                                        <div class="d-flex  justify-content-between align-items-center my-3">
+                                            <h5>Total</h5>
+                                            <h3 class="total_price">฿{{mTotalPrice | number: '1.2-2'}}</h3>
+                                        </div>
+                                        <div *ngIf="mIsPaymentShow === false;then payment_btn else cancel_btn">here is
+                                            ignored</div>
+                                        <ng-template #payment_btn>
+                                            <button (click)="onClickPayment()"
+                                                [ngClass]="[mOrderArray.length == 0 ? 'payment_blank' : 'payment_ready', 'payment_btn', 'btn', 'btn-default']">
+                                                <strong>Payment</strong>
+                                            </button>
+                                        </ng-template>
+                                        <ng-template #cancel_btn>
+                                            <button (click)="onClickPayment()"
+                                                class="payment_btn payment_cancel btn btn-default">
+                                                <strong>Cancel</strong>
+                                            </button>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="mIsPaymentShow === false;then productList else payment">here is ignored</div>
+                        <ng-template #productList>
+                            <div class="col-md-7">
+                                <div class="row">
+                                    <div *ngFor="let item of mProductArray" (click)="onClickAddOrder(item, false)"
+                                        class="col-sm-6 col-md-3">
+                                        <div class="card card-product">
+                                            <div class="thumbnail">
+                                                <img *ngIf="item.image === ''" src="assets/images/no_photo.jpg"
+                                                    class="portrait">
+                                                <img *ngIf="item.image !== ''" [src]="item.image" class="portrait">
+                                                <!-- Property Binding -->
+                                                <!-- <img *ngIf="item.image !== ''" src="{{ item.image }}" class="portrait"> -->
+                                            </div>
+                                            <!-- ngClass for Dynamic CSS -->
+                                            <span
+                                                [ngClass]="[isSelectedItem(item) === true ? 'nprice_tag_selected' : 'nprice_tag', 'product_price']">
+                                                ฿{{item.price | number: '1.2-2'}}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <ng-template #payment>
+                            <div class="col-md-7">
+                                <!-- Child Component -->
+                                <app-shop-payment [total]="mTotalPrice" (submit_success)="onPaymentCompleted()" (sendName)="printName($event)"></app-shop-payment>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
