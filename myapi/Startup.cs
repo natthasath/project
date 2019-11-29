@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -67,6 +68,7 @@ namespace myapi
                     },
                 });
 
+                // Swagger authorize button .net core 3 && JWT
                 var securitySchema = new OpenApiSecurityScheme
                 {
                     Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
@@ -86,6 +88,9 @@ namespace myapi
                 securityRequirement.Add(securitySchema, new[] { "Bearer" });
                 c.AddSecurityRequirement(securityRequirement);
 
+                // Swagger authorize button .net core 3 && OAuth
+
+
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetEntryAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -100,8 +105,9 @@ namespace myapi
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
+                    // No Hardcode JWT Claims
                     ValidateIssuer = true,
-                    ValidIssuer = Configuration["ITCNIDA"],
+                    ValidIssuer = Configuration["Jwt:Issuer"],
                     ValidateAudience = true,
                     ValidAudience = Configuration["Jwt:Audience"],
                     ValidateLifetime = true,
@@ -110,9 +116,41 @@ namespace myapi
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                 };
             });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigins", builder =>
+                {
+                    builder.WithOrigins("http://example.com", "http://localhost:4200")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                    //.WithMethods("GET", "POST", "HEAD");
+                });
+
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
+
+                /*
+                    The browser can skip the preflight request
+                    if the following conditions are true:
+                    - The request method is GET, HEAD, or POST.
+                    - The Content-Type header
+                       - application/x-www-form-urlencoded
+                       - multipart/form-data
+                       - text/plain
+                */
+            });
+
             // Declare Product Service for DI
             services.AddScoped<IProductRepo, ProductRepo>();
             services.AddScoped<IAuthRepo, AuthRepo>();
+            services.AddAutoMapper(typeof(Startup));
+            // Declare Access Hosting Service for DI ** Upload Image
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -127,6 +165,8 @@ namespace myapi
             app.UseHttpsRedirection(); // http => https
 
             app.UseRouting();
+
+            app.UseCors("AllowAll");
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             // http://localhost:<port>/swagger/<version-doc>/swagger.json

@@ -1,4 +1,4 @@
-<div class="content-wrapper">
+<div class="content-wrapper" *ngIf="mDataArray !== undefined">
     <section class="content-header">
         <div class="container-fluid">
             <div class="row">
@@ -37,10 +37,10 @@
             <div class="card-body">
                 <div class="row card-body-header">
                     <div class="col-5">
-                        <input class="form-control input-lg" placeholder="Enter search keyword">
+                        <input (keyup)="searchTextChanged.next($event.target)" class="form-control input-lg" placeholder="Enter search keyword">
                     </div>
                     <div class="col-7">
-                        <a class="btn btn-success float-right btn-add">เพิ่ม</a>
+                        <a [routerLink]="['/stock/create']" class="btn btn-success float-right btn-add">(เพิ่ม)</a>
                     </div>
                 </div>
                 <table class="table table-bordered table-striped table-hover">
@@ -55,16 +55,17 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let item of mDataArray">
-                            <td class="text-center">{{ item }}</td>
+                            <td class="text-center">{{ item.productId }}</td>
                             <td>
-                                <img src="assets/images/no_photo.jpg" class="product_image">
-                                <strong class="product_name">XXXX</strong>
+                                <img *ngIf="item.image === ''" src="assets/images/no_photo.jpg" class="product_image">
+                                <img *ngIf="item.image !== ''" src="{{ item.image }}" class="product_image">
+                                <strong class="product_name">{{ item.name }}</strong>
                             </td>
-                            <td>฿XXXXXX</td>
-                            <td>XXXXX PCS.</td>
+                            <td>฿{{ item.price }}</td>
+                            <td>{{ item.stock }}</td>
                             <td class="text-center">
-                                <img (click)="editProduct(999)" src="assets/images/ic_edit.png" class="edit_product">
-                                <img (click)="deleteProduct(999)" src="assets/images/ic_delete.png" class="delete_product">
+                                <img (click)="editProduct(item.productId)" src="assets/images/ic_edit.png" class="edit_product">
+                                <img (click)="deleteProduct(item.productId)" src="assets/images/ic_delete.png" class="delete_product">
                             </td>
                         </tr>
                     </tbody>

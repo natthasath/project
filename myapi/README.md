@@ -25,3 +25,13 @@ refresh token access token => oauth
 
 ## What's new
 https://docs.microsoft.com/en-us/aspnet/core/fundamentals/middleware/?view=aspnetcore-3.0
+
+## Automapper
+
+## Service in Controller (Contructor)
+
+## Docker
+docker pull mcr.microsoft.com/dotnet/core/sdk:3.0
+docker pull mcr.microsoft.com/dotnet/core/aspnet:3.0
+docker pull node:12.8-alpine
+docker pull nginx:stable-alpine

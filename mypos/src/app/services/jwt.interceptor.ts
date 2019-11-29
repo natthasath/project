@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpResponse, HttpErrorResponse } from '@angular/common/http'
 import 'rxjs/add/operator/do';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +12,9 @@ export class JwtInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    // const jwtToken = JSON.parse(
-    //   localStorage.getItem(environment.keyLocalAuthenInfo)
-    // );
+    const jwtToken = localStorage.getItem(environment.keyLocalAuthenInfo);
 
-    const jwtToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjaGFpeWFzaXQudEBnbWFpbC5jb20iLCJpZCI6IjMiLCJ1c2VybmFtZSI6InRhbmFrb3JuIiwicG9zaXRpb24iOiJBZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNTc3MzQzMzQyLCJpc3MiOiJDb2RlTW9iaWxlcyBMdGQiLCJhdWQiOiJodHRwOi8vY29kZW1vYmlsZXMuY29tIn0.2T_Al-kBWaQztcXYGLdcsi5lGo-VwKzKnjoVjyPIHXI'
+    // const jwtToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjaGFpeWFzaXQudEBnbWFpbC5jb20iLCJpZCI6IjMiLCJ1c2VybmFtZSI6InRhbmFrb3JuIiwicG9zaXRpb24iOiJBZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNTc3MzQzMzQyLCJpc3MiOiJDb2RlTW9iaWxlcyBMdGQiLCJhdWQiOiJodHRwOi8vY29kZW1vYmlsZXMuY29tIn0.2T_Al-kBWaQztcXYGLdcsi5lGo-VwKzKnjoVjyPIHXI'
 
     if (jwtToken != null) {
       const cloned = req.clone({

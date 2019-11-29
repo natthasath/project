@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
     private authService: AuthService) { }
 
   ngOnInit() {
-    if (this.authService.isLogin) {
+    if (this.authService.isLogin()) {
       this.router.navigate(["/stock"])
     }
   }

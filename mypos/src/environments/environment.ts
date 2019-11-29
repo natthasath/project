@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  baseAPIURL: 'http://localhost:1112',
+  baseAPIURL: 'https://localhost:5001',
   keyLocalAuthenInfo: 'keyLocalAuthenInfo'
 };
 
